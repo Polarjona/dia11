@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat IA</title>
+</head>
+<body>
+
+<h1>Chat IA</h1>
+
+<input id="prompt">
+<button onclick="send()">Enviar</button>
+
+<pre id="response"></pre>
+
+<script>
+
+async function send() {
+
+    try {
+
+        const prompt =
+            document.getElementById("prompt").value;
+
+        document.getElementById("response").innerText =
+            "Pensando...";
+
+        const result = await fetch(
+            "http://localhost:18000/chat?prompt=" +
+            encodeURIComponent(prompt),
+            {
+                method: "POST"
+            }
+        );
+
+        const data = await result.json();
+
+        console.log(data);
+
+        document.getElementById("response").innerText =
+            data.response || JSON.stringify(data);
+
+    } catch (err) {
+
+        console.error(err);
+
+        document.getElementById("response").innerText =
+            "Error: " + err.message;
+    }
+}
+
+</script>
+
+</body>
+</html>
+
